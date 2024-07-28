@@ -14,15 +14,21 @@ def main():
 
 
 def update(game: Game):
+
+    events = []
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             return False
+        events.append(event)
+
+    game.update(events)
+
     return True
 
 
 def draw(game: Game, surface: pygame.Surface):
     surface.fill(pygame.Color("black"))
-    game.drawer.draw(surface)
+    game.draw(surface)
     pygame.display.flip()
 
 
