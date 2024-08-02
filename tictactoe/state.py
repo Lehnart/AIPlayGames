@@ -1,4 +1,11 @@
+import enum
 from typing import List, Optional, Tuple
+
+
+class GameStatus(enum.Enum):
+    PLAYING = 0
+    DRAW = 1
+    WON = 2
 
 
 class State:
@@ -10,7 +17,8 @@ class State:
         self.next_player: int = 0
         self.grid: List[List[Optional[str]]] = self.init_grid()
         self.player_symbol = ["X", "O"]
-        self.is_game_over = False
+        self.game_status = GameStatus.PLAYING
+        self.winner = None
 
     def init_grid(self):
         return [[None for _ in range(self.col_count)] for _ in range(self.row_count)]
@@ -36,5 +44,8 @@ class State:
 
         return symbols
 
-    def set_game_over_status(self, status: bool):
-        self.is_game_over = status
+    def set_game_over_status(self, status: GameStatus):
+        self.game_status = status
+
+    def set_winner(self, winner: int):
+        self.winner = winner

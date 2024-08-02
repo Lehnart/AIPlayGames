@@ -2,7 +2,7 @@ from typing import List
 
 import pygame
 
-from tictactoe.state import State
+from tictactoe.state import State, GameStatus
 
 
 class Logic:
@@ -33,21 +33,32 @@ class Logic:
                     self.play(0, 2)
 
     def play(self, row: int, col: int):
-        if self.check_if_game_is_over():
+        if self.state.game_status is not GameStatus.PLAYING:
             return
         if not self.is_case_allowed(row, col):
             return
         self.state.set_symbol(row, col)
+        self.check_if_game_is_over()
 
     def check_if_game_is_over(self):
-        game_over_status = self.is_game_over()
-        self.state.set_game_over_status(game_over_status)
-        return game_over_status
+        if self.has_a_player_won():
+            self.state.set_game_over_status(GameStatus.WON)
+            self.state.set_winner(self.get_game_winner())
+            print(f"Player {self.get_game_winner()} has won ")
+            return True
+        elif self.is_board_full():
+            self.state.set_game_over_status(GameStatus.DRAW)
+            print(f"It's a draw")
+            return True
+        return False
 
     def is_case_allowed(self, row, col):
         return self.state.get_symbol_in_case(row, col) is None
 
-    def is_game_over(self):
+    def has_a_player_won(self):
+        return self.get_symbol_winner() is not None
+
+    def get_symbol_winner(self):
         lines = [
             [(0, 0), (0, 1), (0, 2)], [(1, 0), (1, 1), (1, 2)], [(2, 0), (2, 1), (2, 2)],
             [(0, 0), (1, 0), (2, 0)], [(0, 1), (1, 1), (2, 1)], [(0, 2), (1, 2), (2, 2)],
@@ -64,6 +75,22 @@ class Logic:
                 symbols[symbol] += 1
             for symbol in symbols:
                 if symbols[symbol] == 3:
-                    return True
+                    return symbol
 
-        return False
+        return None
+
+    def get_game_winner(self):
+        symbol = self.get_symbol_winner()
+        if symbol is None:
+            return None
+        return self.state.player_symbol.index(symbol)
+
+    def is_board_full(self):
+        for row in range(self.state.row_count):
+            for col in range(self.state.col_count):
+                if self.state.get_symbol_in_case(row, col) is None:
+                    return False
+        return True
+
+    def is_game_over(self):
+        return self.is_board_full() or self.has_a_player_won()
