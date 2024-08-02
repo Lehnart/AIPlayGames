@@ -1,7 +1,7 @@
 from typing import List
 
-import pygame
-
+from tictactoe.ai_player import AIPlayer
+from tictactoe.human_player import HumanPlayer
 from tictactoe.state import State, GameStatus
 
 
@@ -9,28 +9,17 @@ class Logic:
 
     def __init__(self, state: State):
         self.state = state
+        self.player1 = HumanPlayer()
+        self.player2 = AIPlayer()
 
     def update(self, events: List):
-        for event in events:
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_KP_1:
-                    self.play(2, 0)
-                if event.key == pygame.K_KP_2:
-                    self.play(2, 1)
-                if event.key == pygame.K_KP_3:
-                    self.play(2, 2)
-                if event.key == pygame.K_KP_4:
-                    self.play(1, 0)
-                if event.key == pygame.K_KP_5:
-                    self.play(1, 1)
-                if event.key == pygame.K_KP_6:
-                    self.play(1, 2)
-                if event.key == pygame.K_KP_7:
-                    self.play(0, 0)
-                if event.key == pygame.K_KP_8:
-                    self.play(0, 1)
-                if event.key == pygame.K_KP_9:
-                    self.play(0, 2)
+        next_move = None
+        if self.state.next_player == 0:
+            next_move = self.player1.next_move(events)
+        elif self.state.next_player == 1:
+            next_move = self.player2.next_move(events)
+        if next_move is not None:
+            self.play(*next_move)
 
     def play(self, row: int, col: int):
         if self.state.game_status is not GameStatus.PLAYING:
