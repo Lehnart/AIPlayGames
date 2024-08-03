@@ -10,7 +10,7 @@ def main():
 
     while does_game_continue:
         does_game_continue = update(tictactoe)
-        draw(tictactoe, window)
+        #draw(tictactoe, window)
 
 
 def update(game: Game):

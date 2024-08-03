@@ -14,7 +14,7 @@ class Drawer:
 
     def draw(self, surface: pygame.Surface):
         surface.blit(self.board_image, (0, 0))
-        for row, col, symbol in self.state.get_cases_with_symbols():
+        for row, col, symbol in self.state.board.get_cases_with_symbols():
             symbol_image = self.symbol_to_marker_map[symbol]
             x, y = self.col_to_x(col), self.row_to_y(row)
             surface.blit(symbol_image, (x, y))

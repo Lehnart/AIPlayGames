@@ -1,23 +1,24 @@
 from typing import List
 
-from tictactoe.ai_player import AIPlayer
-from tictactoe.human_player import HumanPlayer
+from tictactoe.q_learning_ai_player import QLearningAIPlayer
+from tictactoe.random_ai_player import RandomAIPlayer
 from tictactoe.state import State, GameStatus
 
 
 class Logic:
 
     def __init__(self, state: State):
+        self.game_count = 0
         self.state = state
-        self.player1 = HumanPlayer()
-        self.player2 = AIPlayer()
+        self.player1 = RandomAIPlayer()
+        self.player2 = QLearningAIPlayer()
 
     def update(self, events: List):
         next_move = None
         if self.state.next_player == 0:
-            next_move = self.player1.next_move(events)
+            next_move = self.player1.next_move(self.state, events)
         elif self.state.next_player == 1:
-            next_move = self.player2.next_move(events)
+            next_move = self.player2.next_move(self.state, events)
         if next_move is not None:
             self.play(*next_move)
 
@@ -26,23 +27,33 @@ class Logic:
             return
         if not self.is_case_allowed(row, col):
             return
-        self.state.set_symbol(row, col)
-        self.check_if_game_is_over()
+        self.state.play(row, col)
+        if self.is_game_over():
+            if self.state.game_status.WON :
+                reward = 1 if self.get_game_winner() == 1 else -1
+                self.player2.update_q_table(self.state, reward)
+            elif self.state.game_status.DRAW:
+                self.player2.update_q_table(self.state, 0)
+            self.player2.exploration_rate *= 0.99
+            self.game_count += 1
+            self.state.reset()
+        else:
+            self.player2.update_q_table(self.state, 0)
 
-    def check_if_game_is_over(self):
+    def is_game_over(self):
         if self.has_a_player_won():
             self.state.set_game_over_status(GameStatus.WON)
             self.state.set_winner(self.get_game_winner())
-            print(f"Player {self.get_game_winner()} has won ")
+            print(f"Game {self.game_count} Player {self.get_game_winner()} has won ")
             return True
         elif self.is_board_full():
             self.state.set_game_over_status(GameStatus.DRAW)
-            print(f"It's a draw")
+            print(f"Game {self.game_count} It's a draw")
             return True
         return False
 
     def is_case_allowed(self, row, col):
-        return self.state.get_symbol_in_case(row, col) is None
+        return self.state.board.get_symbol_in_case(row, col) is None
 
     def has_a_player_won(self):
         return self.get_symbol_winner() is not None
@@ -56,7 +67,7 @@ class Logic:
         for line in lines:
             symbols = {}
             for row, col in line:
-                symbol = self.state.get_symbol_in_case(row, col)
+                symbol = self.state.board.get_symbol_in_case(row, col)
                 if symbol is None:
                     continue
                 if symbol not in symbols:
@@ -75,11 +86,8 @@ class Logic:
         return self.state.player_symbol.index(symbol)
 
     def is_board_full(self):
-        for row in range(self.state.row_count):
-            for col in range(self.state.col_count):
-                if self.state.get_symbol_in_case(row, col) is None:
+        for row in range(self.state.board.row_count):
+            for col in range(self.state.board.col_count):
+                if self.state.board.get_symbol_in_case(row, col) is None:
                     return False
         return True
-
-    def is_game_over(self):
-        return self.is_board_full() or self.has_a_player_won()
