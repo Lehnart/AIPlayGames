@@ -19,4 +19,4 @@ class Game:
         self.drawer.draw(surface)
 
     def update(self, events):
-        self.logic.update(events)
+        return self.logic.update(events)

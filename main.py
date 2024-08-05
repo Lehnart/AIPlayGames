@@ -21,9 +21,9 @@ def update(game: Game):
             return False
         events.append(event)
 
-    game.update(events)
+    does_game_continue = game.update(events)
 
-    return True
+    return does_game_continue
 
 
 def draw(game: Game, surface: pygame.Surface):

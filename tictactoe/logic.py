@@ -1,3 +1,4 @@
+import pickle
 from typing import List
 
 from tictactoe.q_learning_ai_player import QLearningAIPlayer
@@ -22,6 +23,12 @@ class Logic:
         if next_move is not None:
             self.play(*next_move)
 
+        if self.game_count > 10000:
+            with open("q.bin", "bw") as q_file:
+                pickle.dump(self.player2.Q, q_file)
+            return False
+        return True
+
     def play(self, row: int, col: int):
         if self.state.game_status is not GameStatus.PLAYING:
             return
@@ -29,7 +36,7 @@ class Logic:
             return
         self.state.play(row, col)
         if self.is_game_over():
-            if self.state.game_status.WON :
+            if self.state.game_status.WON:
                 reward = 1 if self.get_game_winner() == 1 else -1
                 self.player2.update_q_table(self.state, reward)
             elif self.state.game_status.DRAW:
