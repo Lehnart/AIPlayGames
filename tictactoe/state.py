@@ -13,7 +13,7 @@ class State:
 
     def __init__(self):
         self.player_count = 2
-        self.next_player: int = 0
+        self.next_player: int = 1
         self.board = Board()
         self.player_symbol = ["X", "O"]
         self.game_status = GameStatus.PLAYING

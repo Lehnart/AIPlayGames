@@ -9,12 +9,11 @@ def main():
     does_game_continue = True
 
     while does_game_continue:
-        does_game_continue = update(tictactoe)
         #draw(tictactoe, window)
+        does_game_continue = update(tictactoe)
 
 
 def update(game: Game):
-
     events = []
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

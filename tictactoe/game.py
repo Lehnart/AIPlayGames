@@ -1,7 +1,4 @@
-from typing import List
-
 import pygame
-from pygame import Surface
 
 from tictactoe.drawer import Drawer
 from tictactoe.logic import Logic

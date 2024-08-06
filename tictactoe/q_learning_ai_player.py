@@ -15,30 +15,36 @@ class QLearningAIPlayer:
         self.last_state_string = None
 
     def next_move(self, state: State, events: List):
+
+        self.update_q_table(state, 0)
+
         state_string = state.board.to_string()
 
-        # Exploration-exploitation trade-off
         if random.uniform(0, 1) < self.exploration_rate or state_string not in self.Q:
-            self.last_state_string = state_string
-            self.last_action = random.choice(state.board.get_empty_cases())
-            return self.last_action
+            return self.explore(state, state_string)
 
-        else:
-            # Choose the action with the highest Q-value
-            q_values = self.Q[state_string]
-            possible_actions = state.board.get_empty_cases()
-            for row, col in possible_actions:
-                if (row, col) not in q_values:
-                    q_values[(row, col)] = 0
-            empty_q_values = [q_values[(row, col)] for row, col in possible_actions]
-            max_q_value = max(empty_q_values)  # find the maximum Q-value among the empty cells Qvalue
-            max_q_indices = [i for i in range(len(possible_actions)) if empty_q_values[i] == max_q_value]  # retrieves the indices of empty cells that have the maximum Q-value.
-            max_q_index = random.choice(max_q_indices)  # if there are multiple cells with same maximum Q value select 1 randomly
-            action = tuple(possible_actions[max_q_index])  # retrieves the indices of the selected empty cell based on max_q_index
+        return self.exploit(state, state_string)
 
+    def exploit(self, state, state_string):
+        # Choose the action with the highest Q-value
+        q_values = self.Q[state_string]
+        possible_actions = state.board.get_empty_cases()
+        for row, col in possible_actions:
+            if (row, col) not in q_values:
+                q_values[(row, col)] = 0
+        empty_q_values = [q_values[(row, col)] for row, col in possible_actions]
+        max_q_value = max(empty_q_values)  # find the maximum Q-value among the empty cells Qvalue
+        max_q_indices = [i for i in range(len(possible_actions)) if empty_q_values[i] == max_q_value]  # retrieves the indices of empty cells that have the maximum Q-value.
+        max_q_index = random.choice(max_q_indices)  # if there are multiple cells with same maximum Q value select 1 randomly
+        action = tuple(possible_actions[max_q_index])  # retrieves the indices of the selected empty cell based on max_q_index
         self.last_state_string = state_string
         self.last_action = action
         return action
+
+    def explore(self, state, state_string):
+        self.last_state_string = state_string
+        self.last_action = random.choice(state.board.get_empty_cases())
+        return self.last_action
 
     def update_q_table(self, next_state: State, reward):
         if self.last_action is None:
