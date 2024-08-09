@@ -47,3 +47,15 @@ class Board:
 
     def set_symbol(self, row: int, col: int, symbol: str):
         self.grid[row][col] = symbol
+
+    @staticmethod
+    def clone(other_board):
+        new_board = Board()
+        new_board.row_count = other_board.row_count
+        new_board.col_count = other_board.col_count
+        new_board.grid = new_board.init_grid()
+        for row in range(new_board.row_count):
+            for col in range(new_board.col_count):
+                symbol = other_board.get_symbol_in_case(row, col)
+                new_board.grid[row][col] = symbol
+        return new_board
