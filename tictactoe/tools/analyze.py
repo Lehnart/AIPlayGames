@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 results = []
-with open("res/results.txt", "r") as result_file:
+with open("../res/results.txt", "r") as result_file:
     for line in result_file:
         if "Player 1" in line:
             results.append(1)

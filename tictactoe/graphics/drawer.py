@@ -1,6 +1,6 @@
 import pygame
 
-from tictactoe.state import State
+from tictactoe.logic.state import State
 
 
 class Drawer:

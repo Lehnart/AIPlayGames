@@ -3,7 +3,7 @@ from typing import List
 import pygame
 
 from tictactoe.player import Player
-from tictactoe.state import State
+from tictactoe.logic.state import State
 
 
 class HumanPlayer(Player):

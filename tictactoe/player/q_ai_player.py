@@ -3,7 +3,7 @@ import random
 from typing import List
 
 from tictactoe.player import Player
-from tictactoe.state import State
+from tictactoe.logic.state import State
 
 
 class QAIPlayer(Player):

@@ -1,8 +1,8 @@
 import pygame
 
-from tictactoe.drawer import Drawer
+from tictactoe.graphics.drawer import Drawer
 from tictactoe.logic import Logic
-from tictactoe.state import State
+from tictactoe.logic.state import State
 
 
 class Game:

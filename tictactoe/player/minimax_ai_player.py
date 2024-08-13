@@ -2,7 +2,7 @@ import random
 from typing import List
 
 from tictactoe.player import Player
-from tictactoe.state import State, GameStatus
+from tictactoe.logic.state import State, GameStatus
 
 
 class MinimaxAIPlayer(Player):

@@ -1,14 +1,12 @@
 import pickle
 from typing import List
 
-from tictactoe.minimax_ai_player import MinimaxAIPlayer
-from tictactoe.q_ai_player import QAIPlayer
-from tictactoe.q_learning_ai_player import QLearningAIPlayer
-from tictactoe.random_ai_player import RandomAIPlayer
-from tictactoe.state import State, GameStatus
+from tictactoe.player.q_ai_player import QAIPlayer
+from tictactoe.player.q_learning_ai_player import QLearningAIPlayer
+from tictactoe.logic.state import State, GameStatus
 
 
-class Logic:
+class Updater:
 
     def __init__(self, state: State):
         self.game_count = 0

@@ -1,6 +1,6 @@
 import enum
 
-from tictactoe.board import Board
+from tictactoe.logic.board import Board
 
 
 class GameStatus(enum.Enum):

@@ -1,7 +1,7 @@
 import abc
 from typing import List
 
-from tictactoe.state import State
+from tictactoe.logic.state import State
 
 
 class Player(abc.ABC):

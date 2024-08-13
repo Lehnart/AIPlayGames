@@ -2,7 +2,7 @@ import random
 from typing import List, Tuple, Dict
 
 from tictactoe.player import Player
-from tictactoe.state import State
+from tictactoe.logic.state import State
 
 
 class QLearningAIPlayer(Player):
