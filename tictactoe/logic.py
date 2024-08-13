@@ -2,7 +2,9 @@ import pickle
 from typing import List
 
 from tictactoe.minimax_ai_player import MinimaxAIPlayer
+from tictactoe.q_ai_player import QAIPlayer
 from tictactoe.q_learning_ai_player import QLearningAIPlayer
+from tictactoe.random_ai_player import RandomAIPlayer
 from tictactoe.state import State, GameStatus
 
 
@@ -11,15 +13,15 @@ class Logic:
     def __init__(self, state: State):
         self.game_count = 0
         self.state = state
-        self.player1 = MinimaxAIPlayer(0)
-        self.player2 = MinimaxAIPlayer(1)
+        self.player1 = QAIPlayer(0,"tictactoe/res/q.bin")
+        self.player2 = QLearningAIPlayer(1)
 
     def update(self, events: List):
         next_move = self.get_next_move(events)
         if next_move is not None:
             self.play(*next_move)
 
-        print(self.state.board.to_string())
+        #print(self.state.board.to_string())
         if self.state.is_game_round_over():
             if self.state.game_status == GameStatus.DRAW:
                 print("Draw")
@@ -30,9 +32,9 @@ class Logic:
                     print("Player 2 won")
             self.end_game_round()
 
-        if self.game_count > 20000:
+        if self.game_count > 50000:
             with open("q.bin", "bw") as q_file:
-                pickle.dump(self.player2.Q, q_file)
+                pickle.dump(self.player1.Q, q_file)
             return False
         return True
 
@@ -51,11 +53,7 @@ class Logic:
         self.state.play(row, col)
 
     def end_game_round(self):
-        # if self.state.game_status.WON:
-        #     reward = 1 if self.state.get_winner_index() == 1 else -1
-        #     self.player2.update_q_table(self.state, reward)
-        # elif self.state.game_status.DRAW:
-        #     self.player2.update_q_table(self.state, 0)
-        # self.player2.exploration_rate *= 0.999
+        self.player1.end(self.state)
+        self.player2.end(self.state)
         self.game_count += 1
         self.state.reset()

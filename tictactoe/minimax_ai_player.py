@@ -1,10 +1,11 @@
 import random
 from typing import List
 
+from tictactoe.player import Player
 from tictactoe.state import State, GameStatus
 
 
-class MinimaxAIPlayer:
+class MinimaxAIPlayer(Player):
     def __init__(self, player):
         self.player = player
 
@@ -56,3 +57,6 @@ class MinimaxAIPlayer:
                 value = self.minimax(new_state, depth + 1, True)
                 best_value = min(best_value, value)
             return best_value
+
+    def end(self, state: State):
+        pass

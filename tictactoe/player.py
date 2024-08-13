@@ -1,15 +1,15 @@
-import random
-from time import time
+import abc
 from typing import List
 
-from tictactoe.player import Player
 from tictactoe.state import State
 
 
-class RandomAIPlayer(Player):
+class Player(abc.ABC):
 
+    @abc.abstractmethod
     def next_move(self, state: State, events: List):
-        return random.choice(state.board.get_empty_cases())
+        pass
 
+    @abc.abstractmethod
     def end(self, state: State):
         pass

@@ -1,18 +1,20 @@
 import random
 from typing import List, Tuple, Dict
 
+from tictactoe.player import Player
 from tictactoe.state import State
 
 
-class QLearningAIPlayer:
+class QLearningAIPlayer(Player):
 
-    def __init__(self):
+    def __init__(self, player: int):
         self.exploration_rate = 0.5
         self.Q = {}
         self.learning_rate = 0.1
         self.discount_factor = 0.9
         self.last_action = None
         self.last_state_string = None
+        self.player = player
 
     def next_move(self, state: State, events: List):
 
@@ -66,3 +68,19 @@ class QLearningAIPlayer:
         q_dict[self.last_action] += self.learning_rate * ((reward + self.discount_factor * max_next_q_value) - q_dict[self.last_action])
 
         self.Q[self.last_state_string] = q_dict
+
+    def end(self, state: State):
+        self.exploration_rate *= 0.9999
+
+        if state.winner == 0:
+            if self.player == 0:
+                self.update_q_table(state, 1)
+            else:
+                self.update_q_table(state, -1)
+        elif state.winner == 1:
+            if self.player == 1:
+                self.update_q_table(state, 1)
+            else:
+                self.update_q_table(state, -1)
+        else:
+            self.update_q_table(state, 0)

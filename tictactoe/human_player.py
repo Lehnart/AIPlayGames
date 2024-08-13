@@ -2,10 +2,16 @@ from typing import List
 
 import pygame
 
+from tictactoe.player import Player
+from tictactoe.state import State
 
-class HumanPlayer:
 
-    def next_move(self, events: List):
+class HumanPlayer(Player):
+
+    def end(self, state: State):
+        pass
+
+    def next_move(self, state: State, events: List):
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_KP_1:

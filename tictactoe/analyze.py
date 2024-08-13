@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 results = []
 with open("res/results.txt", "r") as result_file:
     for line in result_file:
-        if "Player 0" in line:
-            results.append(-1)
-        elif "Player 1" in line:
+        if "Player 1" in line:
             results.append(1)
+        elif "Player 2" in line:
+            results.append(-1)
         else:
             results.append(0)
 
