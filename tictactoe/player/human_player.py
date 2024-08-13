@@ -2,11 +2,11 @@ from typing import List
 
 import pygame
 
-from tictactoe.player import Player
 from tictactoe.logic.state import State
+from tictactoe.player.abstract_player import AbstractPlayer
 
 
-class HumanPlayer(Player):
+class HumanPlayer(AbstractPlayer):
 
     def end(self, state: State):
         pass

@@ -1,11 +1,11 @@
 import random
 from typing import List, Tuple, Dict
 
-from tictactoe.player import Player
+from tictactoe.player.abstract_player import AbstractPlayer
 from tictactoe.logic.state import State
 
 
-class QLearningAIPlayer(Player):
+class QLearningAIPlayer(AbstractPlayer):
 
     def __init__(self, player: int):
         self.exploration_rate = 0.5

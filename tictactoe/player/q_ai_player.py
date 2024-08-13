@@ -2,11 +2,11 @@ import pickle
 import random
 from typing import List
 
-from tictactoe.player import Player
+from tictactoe.player.abstract_player import AbstractPlayer
 from tictactoe.logic.state import State
 
 
-class QAIPlayer(Player):
+class QAIPlayer(AbstractPlayer):
 
     def __init__(self, player: int, q_file_str: str):
         with open(q_file_str, "br") as q_file:

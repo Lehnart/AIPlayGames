@@ -1,11 +1,11 @@
 import random
 from typing import List
 
-from tictactoe.player import Player
 from tictactoe.logic.state import State, GameStatus
+from tictactoe.player.abstract_player import AbstractPlayer
 
 
-class MinimaxAIPlayer(Player):
+class MinimaxAIPlayer(AbstractPlayer):
     def __init__(self, player):
         self.player = player
 
